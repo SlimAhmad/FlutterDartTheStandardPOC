@@ -7,9 +7,7 @@ import 'student_service_test_base.dart';
 
 void runRetrieveAllStudentsTests(StudentServiceTestBase base) {
   group('retrieveAllStudentsAsync —', () {
-    // ─── Happy Path ──────────────────────────────────────────────────────────
-
-    group('Happy Path |', () {
+    group('retrieveAll |', () {
       test(
         'GIVEN students exist in storage '
         'WHEN retrieveAllStudentsAsync is called '
@@ -58,8 +56,6 @@ void runRetrieveAllStudentsTests(StudentServiceTestBase base) {
         },
       );
     });
-
-    // ─── Dependency ──────────────────────────────────────────────────────────
 
     group('Dependency Exceptions |', () {
       test(

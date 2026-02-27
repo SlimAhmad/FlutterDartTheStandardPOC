@@ -7,9 +7,7 @@ import 'student_service_test_base.dart';
 
 void runRemoveStudentByIdTests(StudentServiceTestBase base) {
   group('removeStudentByIdAsync —', () {
-    // ─── Happy Path ──────────────────────────────────────────────────────────
-
-    group('Happy Path |', () {
+    group('remove |', () {
       test(
         'GIVEN a valid studentId that exists '
         'WHEN removeStudentByIdAsync is called '
@@ -45,8 +43,6 @@ void runRemoveStudentByIdTests(StudentServiceTestBase base) {
         },
       );
     });
-
-    // ─── Validation ──────────────────────────────────────────────────────────
 
     group('Validation |', () {
       test(
@@ -108,8 +104,6 @@ void runRemoveStudentByIdTests(StudentServiceTestBase base) {
         },
       );
     });
-
-    // ─── Dependency ──────────────────────────────────────────────────────────
 
     group('Dependency Exceptions |', () {
       test(

@@ -1,16 +1,9 @@
-// student_service_test.dart
-//
-// This is the single entry point for ALL StudentService tests.
-// It follows Hassan Habib's Standard: each operation has its own partial file
-// covering happy path, validation exceptions, and dependency exceptions.
-//
 // Run with:  flutter test test/services/foundations/students/student_service_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
 
 import 'student_service_test_base.dart';
 
-// Partial test suites (one file per operation)
 import 'student_service_add_tests.dart';
 import 'student_service_add_validation_tests.dart';
 import 'student_service_add_dependency_tests.dart';

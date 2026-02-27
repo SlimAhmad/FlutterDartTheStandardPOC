@@ -173,8 +173,6 @@ void runAddStudentDependencyTests(StudentServiceTestBase base) {
         final Student randomStudent = base.createRandomStudent();
         final unexpectedException = Exception('Unhandled null reference.');
 
-        // Wrap in FailedStudentServiceException to simulate a service fault
-        // that bypasses dependency handling
         when(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
             .thenAnswer((_) async {
           throw FailedStudentServiceException(

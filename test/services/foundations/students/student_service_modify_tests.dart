@@ -7,9 +7,8 @@ import 'student_service_test_base.dart';
 
 void runModifyStudentTests(StudentServiceTestBase base) {
   group('modifyStudentAsync —', () {
-    // ─── Happy Path ──────────────────────────────────────────────────────────
 
-    group('Happy Path |', () {
+    group('modify |', () {
       test(
         'GIVEN a valid modified student '
         'WHEN modifyStudentAsync is called '
@@ -37,8 +36,6 @@ void runModifyStudentTests(StudentServiceTestBase base) {
         },
       );
     });
-
-    // ─── Validation ──────────────────────────────────────────────────────────
 
     group('Validation |', () {
       test(
@@ -147,8 +144,6 @@ void runModifyStudentTests(StudentServiceTestBase base) {
         },
       );
     });
-
-    // ─── Dependency ──────────────────────────────────────────────────────────
 
     group('Dependency Exceptions |', () {
       test(

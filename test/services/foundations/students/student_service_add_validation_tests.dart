@@ -8,7 +8,6 @@ import 'student_service_test_base.dart';
 
 void runAddStudentValidationTests(StudentServiceTestBase base) {
   group('addStudentAsync — Validation |', () {
-    // ─── Null guard ──────────────────────────────────────────────────────────
 
     test(
       'GIVEN a null student '
@@ -37,8 +36,6 @@ void runAddStudentValidationTests(StudentServiceTestBase base) {
         verifyNoMoreInteractions(base.storageBrokerMock);
       },
     );
-
-    // ─── Id validations ──────────────────────────────────────────────────────
 
     test(
       'GIVEN a student with an empty Id '
@@ -70,8 +67,6 @@ void runAddStudentValidationTests(StudentServiceTestBase base) {
         verifyNever(() => base.storageBrokerMock.insertStudentAsync(any()));
       },
     );
-
-    // ─── Name validations ────────────────────────────────────────────────────
 
     test(
       'GIVEN a student with an empty Name '
@@ -126,8 +121,6 @@ void runAddStudentValidationTests(StudentServiceTestBase base) {
         verifyNever(() => base.storageBrokerMock.insertStudentAsync(any()));
       },
     );
-
-    // ─── Email validations ───────────────────────────────────────────────────
 
     test(
       'GIVEN a student with an empty Email '
@@ -192,8 +185,6 @@ void runAddStudentValidationTests(StudentServiceTestBase base) {
         verifyNever(() => base.storageBrokerMock.insertStudentAsync(any()));
       },
     );
-
-    // ─── Date validations ────────────────────────────────────────────────────
 
     test(
       'GIVEN a student where UpdatedDate does not match CreatedDate '

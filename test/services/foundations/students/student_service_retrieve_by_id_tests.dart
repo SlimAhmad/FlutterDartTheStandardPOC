@@ -7,8 +7,6 @@ import 'student_service_test_base.dart';
 
 void runRetrieveStudentByIdTests(StudentServiceTestBase base) {
   group('retrieveStudentByIdAsync —', () {
-    // ─── Happy Path ──────────────────────────────────────────────────────────
-
     group('Happy Path |', () {
       test(
         'GIVEN a valid studentId that exists in storage '
@@ -38,8 +36,6 @@ void runRetrieveStudentByIdTests(StudentServiceTestBase base) {
         },
       );
     });
-
-    // ─── Validation ──────────────────────────────────────────────────────────
 
     group('Validation |', () {
       test(
@@ -103,8 +99,6 @@ void runRetrieveStudentByIdTests(StudentServiceTestBase base) {
         },
       );
     });
-
-    // ─── Dependency ──────────────────────────────────────────────────────────
 
     group('Dependency Exceptions |', () {
       test(
