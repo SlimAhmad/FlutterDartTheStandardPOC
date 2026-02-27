@@ -1,13 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:hello_world/brokers/apiBrokers/api_broker.dart';
-import 'package:hello_world/brokers/apiBrokers/i_api_broker.dart';
 import 'package:hello_world/brokers/loggings/i_logging_broker.dart';
 import 'package:hello_world/brokers/storages/i_storage_broker.dart';
-import 'package:hello_world/models/customers/Customer.dart';
 import 'package:hello_world/models/students/student.dart';
 import 'package:hello_world/models/students/student_exceptions.dart';
 import 'package:hello_world/services/foundations/customers/i_student_service.dart';
-import 'package:hello_world/models/students/student_exceptions.dart';
 import 'package:hello_world/services/foundations/customers/student_service.dart';
 import 'package:http_exception/http_exception.dart';
 
@@ -29,7 +25,7 @@ class StudentService implements IStudentService {
   tryCatch(() async {
     validateStudentOnAdd(student);
 
-    return apibrokerStudent.postStudentAsync(student!);
+    return apibrokerStudent.postStudentAsync(student);
   });
 
   @override
@@ -55,6 +51,6 @@ class StudentService implements IStudentService {
   tryCatch(() async {
     validateStudentOnModify(student);
 
-    return apibrokerStudent.putStudentAsync(student!);
+    return apibrokerStudent.putStudentAsync(student);
   });
 }
