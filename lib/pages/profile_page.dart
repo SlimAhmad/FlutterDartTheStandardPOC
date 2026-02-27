@@ -19,18 +19,28 @@ class _ProfilePageState extends State<ProfilePage> {
   ];
 
  final MovieListService movieListService = MovieListService();
+ bool isLoading = false;
  MovieListResponse? movies;
 
   @override
   void initState() {
     super.initState();
-    _loadMovies();
-  }
 
-  Future<void> _loadMovies() async {
-      final fetched = await movieListService.retrieveAllMovieListsAsync();
-      setState(() => movies = fetched);
   }
+  Future<void> _loadMovies() async {
+    setState(()=> isLoading = true);
+
+    final fetched = await movieListService.retrieveAllMovieListsAsync();
+    if(fetched != null) 
+    {
+      setState(() => movies = fetched);
+      setState(()=> isLoading = false);
+    }
+  }
+  // Future<void> _loadMovies() async {
+  //     final fetched = await movieListService.retrieveAllMovieListsAsync();
+  //     setState(() => movies = fetched);
+  // }
   void toggleTodoStatus(bool? value, int index) {
     setState(() {
       todos[index]['completed'] = value ?? false;
@@ -39,29 +49,30 @@ class _ProfilePageState extends State<ProfilePage> {
   
   @override
   Widget build(BuildContext context) {
-
-   if (movies == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
       ),
-      body: Center(  
-        child:   ListView.builder(
-        itemCount: movies!.results.length,
-        itemBuilder: (context, index) {
-          final movie = movies!.results[index];
-          return MovieComponent(
-            name: movie.name,
-            posterPath: movie.posterPath,
-            description: movie.description,
-          );
-      }),
-  ),
+      body: Center(
+        child: isLoading
+          ? const CircularProgressIndicator()
+          : movies == null
+              ? ElevatedButton(
+                  onPressed: _loadMovies,
+                  child: const Text("Load Movies"),
+                )
+              : ListView.builder(
+                  itemCount: movies!.results.length,
+                  itemBuilder: (context, index) {
+                    final movie = movies!.results[index];
+                    return MovieComponent(
+                      name: movie.name,
+                      posterPath: movie.posterPath,
+                      description: movie.description,
+                    );
+                  },
+                ),
+            ),
       );
   }
 }
