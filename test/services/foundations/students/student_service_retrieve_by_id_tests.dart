@@ -7,7 +7,7 @@ import 'student_service_test_base.dart';
 
 void runRetrieveStudentByIdTests(StudentServiceTestBase base) {
   group('retrieveStudentByIdAsync —', () {
-    group('Happy Path |', () {
+    group('retrieve byId |', () {
       test(
         'GIVEN a valid studentId that exists in storage '
         'WHEN retrieveStudentByIdAsync is called '

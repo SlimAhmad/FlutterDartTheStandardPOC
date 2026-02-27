@@ -21,7 +21,7 @@ class ApibrokerStudent extends ApiBroker implements IApibrokerStudent {
    @override
    Future<List<Student>> getAllStudentsAsync(String oDataQuery) async {
     
-    if (oDataQuery != null && oDataQuery.isNotEmpty) {
+    if (oDataQuery.isEmpty && oDataQuery.isNotEmpty) {
       relativeUrl += "?$oDataQuery";
     }
 

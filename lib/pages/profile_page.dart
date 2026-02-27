@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/brokers/apiBrokers/api_broker.dart';
 import 'package:hello_world/components/movie_component.dart';
-import 'package:hello_world/components/todo_list.dart';
-import 'package:hello_world/models/movies/movie_list.dart';
 import 'package:hello_world/models/movies/movie_list_response.dart';
 import 'package:hello_world/services/foundations/movies/movie_list_service.dart';
 

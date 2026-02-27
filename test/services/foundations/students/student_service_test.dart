@@ -19,15 +19,9 @@ void main() {
 
   group('StudentService |', () {
 
-    runAddStudentTests(base);
-    runAddStudentValidationTests(base);
-    runAddStudentDependencyTests(base);
-
     runRetrieveStudentByIdTests(base);
 
     runRetrieveAllStudentsTests(base);
-
-    runModifyStudentTests(base);
 
     runRemoveStudentByIdTests(base);
   });

@@ -14,15 +14,12 @@ part 'parts/movie_list_service_exceptions.dart';
 
 class MovieListService implements IMovieListService {
    final ApiBrokerMovieList apiBrokerMovieList;
-   final StorageBroker storageBroker;
    final LoggingBroker loggingBroker;
    
    MovieListService({
     ApiBrokerMovieList? apiBrokerMovieList,
-    StorageBroker? storageBroker,
     LoggingBroker? loggingBroker,
-  })  : apiBrokerMovieList = apiBrokerMovieList ?? ApiBrokerMovieList(),
-        storageBroker = storageBroker ?? StorageBroker(),   
+  })  : apiBrokerMovieList = apiBrokerMovieList ?? ApiBrokerMovieList(), 
         loggingBroker = loggingBroker ?? LoggingBroker();
 
   @override
