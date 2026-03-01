@@ -14,22 +14,21 @@ class SettingsPage extends StatelessWidget {
             children: [
               const Text(
                 'Settings',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               Center(
                 child: CircleAvatar(
                   radius: 40,
                   backgroundColor: Colors.blue,
-                  child: const Text('L',
+                  child: const Text(
+                    'L',
                     style: TextStyle(
-                       fontSize: 20,
-                       fontStyle: FontStyle.normal,
-                       fontWeight: FontWeight(40)),
-                       ),
+                      fontSize: 20,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight(40),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -61,7 +60,8 @@ class SettingsPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
       ),
-    ));
+    );
   }
 }

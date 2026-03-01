@@ -1,12 +1,12 @@
 import 'package:hello_world/brokers/loggings/i_logging_broker.dart';
 import 'package:hello_world/brokers/storages/i_storage_broker.dart';
+import 'package:hello_world/models/foundations/students/student.dart';
+import 'package:hello_world/models/foundations/students/student_exceptions.dart';
 
-import '../../../models/students/student.dart';
-import '../../../models/students/student_exceptions.dart';
 import 'i_student_service.dart';
 
-part 'student_service_validations.dart';
 part 'student_service_exceptions.dart';
+part 'student_service_validations.dart';
 
 class StudentService implements IStudentService {
   final IStorageBroker storageBroker;

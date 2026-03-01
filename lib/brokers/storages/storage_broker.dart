@@ -1,4 +1,4 @@
-import '../../models/students/student.dart';
+import '../../models/foundations/students/student.dart';
 import 'i_storage_broker.dart';
 
 class StorageBroker implements IStorageBroker {

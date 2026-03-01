@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'package:hello_world/brokers/PreferenceBroker/preference_broker.dart';
 import 'package:hello_world/brokers/apiBrokers/i_api_broker.dart';
-import 'package:hello_world/models/movies/movie_list_response.dart';
+import 'package:hello_world/models/foundations/movies/movie_list_response.dart';
 import 'package:http/http.dart' as http;
-import 'package:hello_world/models/students/student.dart';
+import 'package:hello_world/models/foundations/students/student.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 
 part 'parts/api_broker_student.dart';
 part 'parts/api_broker_movie_list.dart';
@@ -19,8 +18,8 @@ class ApiBroker implements IApiBroker {
   ApiBroker({
     required http.Client httpClient,
     required PreferenceBroker preferenceBroker,
-  })  : _httpClient = httpClient,
-        _preferenceBroker = preferenceBroker {
+  }) : _httpClient = httpClient,
+       _preferenceBroker = preferenceBroker {
     _baseUrl = _getBaseUrl();
   }
 
@@ -89,7 +88,6 @@ class ApiBroker implements IApiBroker {
   // ---------------------------------------------------------------
 
   String _getBaseUrl() {
-  
     if (_baseUrl.isEmpty) {
       throw StateError('BaseAddress is not configured.');
     }

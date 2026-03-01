@@ -1,4 +1,4 @@
-import 'package:hello_world/models/students/student.dart';
+import 'package:hello_world/models/foundations/students/student.dart';
 
 abstract class IStudentService {
   Future<Student> addStudentAsync(Student? student);

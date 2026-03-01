@@ -1,36 +1,47 @@
 import 'package:faker/faker.dart';
-import 'package:hello_world/brokers/apiBrokers/api_broker.dart';
+import 'package:hello_world/brokers/dateTimes/date_time_broker.dart';
 import 'package:hello_world/brokers/loggings/logging_broker.dart';
-import 'package:hello_world/models/foundations/movies/movie_list_response.dart';
 import 'package:hello_world/models/foundations/movieslist/movie_list.dart';
-import 'package:hello_world/services/foundations/Movies/i_movie_list_service.dart';
+import 'package:hello_world/models/views/movie_list_view/movie_list_response_view.dart';
 import 'package:hello_world/services/foundations/movies/movie_list_service.dart';
+import 'package:hello_world/services/views/movies_list/i_movie_list_view_service.dart';
+import 'package:hello_world/services/views/movies_list/movie_list_view_service.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:uuid/uuid.dart';
 
-class MockApiBrokerMovieList extends Mock implements ApiBrokerMovieList {}
+class MockMovieListService extends Mock implements MovieListService {}
+
+class MockDateTimeBroker extends Mock implements DateTimeBroker {}
 
 class MockLoggingBroker extends Mock implements LoggingBroker {}
 
-class MovieListServiceTestBase {
-  late MockApiBrokerMovieList apiBrokerMock;
+class MovieListViewServiceTestBase {
+  late MockMovieListService movieListServiceMock;
+  late MockDateTimeBroker dateTimeBrokerMock;
   late MockLoggingBroker loggingBrokerMock;
-  late IMovieListService movieListService;
+  late IMovieListViewService movieListViewService;
 
   final _faker = Faker();
   final _uuid = const Uuid();
 
-  void setUpMovieListServiceTests() {
-    apiBrokerMock = MockApiBrokerMovieList();
+  void setUpMovieListViewServiceTests() {
+    movieListServiceMock = MockMovieListService();
+    dateTimeBrokerMock = MockDateTimeBroker();
     loggingBrokerMock = MockLoggingBroker();
 
     registerFallbackValue(
-      MovieListResponse(results: [], page: 1, totalPages: 1, totalResults: 0),
+      MovieListResponseView(
+        results: [],
+        page: 1,
+        totalPages: 1,
+        totalResults: 0,
+      ),
     );
     registerFallbackValue(Exception('test'));
 
-    movieListService = MovieListService(
-      apiBrokerMovieList: apiBrokerMock,
+    movieListViewService = MovieListViewService(
+      movieListService: movieListServiceMock,
+      dateTimeBroker: dateTimeBrokerMock,
       loggingBroker: loggingBrokerMock,
     );
 
@@ -62,8 +73,8 @@ class MovieListServiceTestBase {
     Duration(days: _faker.randomGenerator.integer(365, min: 1)),
   );
 
-  MovieListResponse createRandomMovieListResponse() {
-    return MovieListResponse(
+  MovieListResponseView createRandomMovieListResponse() {
+    return MovieListResponseView(
       results: createRandomMovieListList(),
       page: 1,
       totalPages: 1,

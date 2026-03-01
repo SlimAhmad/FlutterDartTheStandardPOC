@@ -1,22 +1,24 @@
-import 'package:hello_world/models/movies/movie_list.dart';
+import 'package:equatable/equatable.dart';
+import 'package:hello_world/models/foundations/movieslist/movie_list.dart';
 
-class MovieListResponse {
+class MovieListResponseView extends Equatable {
   final int page;
   final List<MovieList> results;
   final int totalPages;
   final int totalResults;
 
-  MovieListResponse({
+  const MovieListResponseView({
     required this.page,
     required this.results,
     required this.totalPages,
     required this.totalResults,
   });
 
-  factory MovieListResponse.fromJson(Map<String, dynamic> json) {
-    return MovieListResponse(
+  factory MovieListResponseView.fromJson(Map<String, dynamic> json) {
+    return MovieListResponseView(
       page: json['page'] ?? 0,
-      results: (json['results'] as List<dynamic>?)
+      results:
+          (json['results'] as List<dynamic>?)
               ?.map((e) => MovieList.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -24,6 +26,9 @@ class MovieListResponse {
       totalResults: json['total_results'] ?? 0,
     );
   }
+
+  @override
+  List<Object?> get props => [page, results, totalPages, totalResults];
 
   Map<String, dynamic> toJson() {
     return {

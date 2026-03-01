@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hello_world/models/students/student.dart';
-import 'package:hello_world/models/students/student_exceptions.dart';
+import 'package:hello_world/models/foundations/students/student.dart';
+import 'package:hello_world/models/foundations/students/student_exceptions.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'student_service_test_base.dart';
@@ -12,18 +12,19 @@ void runAddStudentDependencyTests(StudentServiceTestBase base) {
       'WHEN addStudentAsync is called '
       'THEN it should throw StudentDependencyException wrapping FailedStudentDependencyException',
       () async {
-        // Arrange
+        // given
         final Student randomStudent = base.createRandomStudent();
         final storageException = Exception('Connection refused.');
 
-        when(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
-            .thenThrow(storageException);
+        when(
+          () => base.storageBrokerMock.insertStudentAsync(randomStudent),
+        ).thenThrow(storageException);
 
-        // Act
+        // when
         Future<Student> addAction() =>
             base.studentService.addStudentAsync(randomStudent);
 
-        // Assert
+        // then
         await expectLater(
           addAction,
           throwsA(
@@ -34,8 +35,9 @@ void runAddStudentDependencyTests(StudentServiceTestBase base) {
             ),
           ),
         );
-        verify(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
-            .called(1);
+        verify(
+          () => base.storageBrokerMock.insertStudentAsync(randomStudent),
+        ).called(1);
         verify(
           () => base.loggingBrokerMock.logError(
             any(),
@@ -51,20 +53,21 @@ void runAddStudentDependencyTests(StudentServiceTestBase base) {
       'WHEN addStudentAsync is called '
       'THEN it should throw StudentDependencyException wrapping FailedStudentRequestException',
       () async {
-        // Arrange
+        // given
         final Student randomStudent = base.createRandomStudent();
         final requestException = FailedStudentRequestException(
           innerException: Exception('HTTP 503 Service Unavailable.'),
         );
 
-        when(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
-            .thenThrow(requestException);
+        when(
+          () => base.storageBrokerMock.insertStudentAsync(randomStudent),
+        ).thenThrow(requestException);
 
-        // Act
+        // when
         Future<Student> addAction() =>
             base.studentService.addStudentAsync(randomStudent);
 
-        // Assert
+        // then
         await expectLater(
           addAction,
           throwsA(
@@ -75,8 +78,9 @@ void runAddStudentDependencyTests(StudentServiceTestBase base) {
             ),
           ),
         );
-        verify(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
-            .called(1);
+        verify(
+          () => base.storageBrokerMock.insertStudentAsync(randomStudent),
+        ).called(1);
         verify(
           () => base.loggingBrokerMock.logError(
             any(),
@@ -87,67 +91,67 @@ void runAddStudentDependencyTests(StudentServiceTestBase base) {
       },
     );
 
-    test(
-      'GIVEN the storage broker throws FailedStudentConfigurationException '
-      'WHEN addStudentAsync is called '
-      'THEN it should throw StudentDependencyException wrapping FailedStudentConfigurationException '
-      'AND log a critical error',
-      () async {
-        // Arrange
-        final Student randomStudent = base.createRandomStudent();
-        final configException = FailedStudentConfigurationException(
-          innerException: Exception('Missing API key.'),
-        );
+    test('GIVEN the storage broker throws FailedStudentConfigurationException '
+        'WHEN addStudentAsync is called '
+        'THEN it should throw StudentDependencyException wrapping FailedStudentConfigurationException '
+        'AND log a critical error', () async {
+      // given
+      final Student randomStudent = base.createRandomStudent();
+      final configException = FailedStudentConfigurationException(
+        innerException: Exception('Missing API key.'),
+      );
 
-        when(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
-            .thenThrow(configException);
+      when(
+        () => base.storageBrokerMock.insertStudentAsync(randomStudent),
+      ).thenThrow(configException);
 
-        // Act
-        Future<Student> addAction() =>
-            base.studentService.addStudentAsync(randomStudent);
+      // when
+      Future<Student> addAction() =>
+          base.studentService.addStudentAsync(randomStudent);
 
-        // Assert
-        await expectLater(
-          addAction,
-          throwsA(
-            isA<StudentDependencyException>().having(
-              (e) => e.innerException,
-              'innerException',
-              isA<FailedStudentConfigurationException>(),
-            ),
+      // then
+      await expectLater(
+        addAction,
+        throwsA(
+          isA<StudentDependencyException>().having(
+            (e) => e.innerException,
+            'innerException',
+            isA<FailedStudentConfigurationException>(),
           ),
-        );
-        verify(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
-            .called(1);
-        verify(
-          () => base.loggingBrokerMock.logCritical(
-            any(),
-            message: any(named: 'message'),
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(base.storageBrokerMock);
-      },
-    );
+        ),
+      );
+      verify(
+        () => base.storageBrokerMock.insertStudentAsync(randomStudent),
+      ).called(1);
+      verify(
+        () => base.loggingBrokerMock.logCritical(
+          any(),
+          message: any(named: 'message'),
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(base.storageBrokerMock);
+    });
 
     test(
       'GIVEN the storage broker throws LockedUserStudentException '
       'WHEN addStudentAsync is called '
       'THEN it should throw StudentDependencyValidationException wrapping LockedUserStudentException',
       () async {
-        // Arrange
+        // given
         final Student randomStudent = base.createRandomStudent();
         final lockedException = LockedUserStudentException(
           innerException: Exception('Record locked by another user.'),
         );
 
-        when(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
-            .thenThrow(lockedException);
+        when(
+          () => base.storageBrokerMock.insertStudentAsync(randomStudent),
+        ).thenThrow(lockedException);
 
-        // Act
+        // when
         Future<Student> addAction() =>
             base.studentService.addStudentAsync(randomStudent);
 
-        // Assert
+        // then
         await expectLater(
           addAction,
           throwsA(
@@ -158,8 +162,9 @@ void runAddStudentDependencyTests(StudentServiceTestBase base) {
             ),
           ),
         );
-        verify(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
-            .called(1);
+        verify(
+          () => base.storageBrokerMock.insertStudentAsync(randomStudent),
+        ).called(1);
         verifyNoMoreInteractions(base.storageBrokerMock);
       },
     );
@@ -169,22 +174,23 @@ void runAddStudentDependencyTests(StudentServiceTestBase base) {
       'WHEN addStudentAsync is called '
       'THEN it should throw StudentDependencyException wrapping FailedStudentDependencyException',
       () async {
-        // Arrange
+        // given
         final Student randomStudent = base.createRandomStudent();
         final unexpectedException = Exception('Unhandled null reference.');
 
-        when(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
-            .thenAnswer((_) async {
+        when(
+          () => base.storageBrokerMock.insertStudentAsync(randomStudent),
+        ).thenAnswer((_) async {
           throw FailedStudentServiceException(
             innerException: unexpectedException,
           );
         });
 
-        // Act
+        // when
         Future<Student> addAction() =>
             base.studentService.addStudentAsync(randomStudent);
 
-        // Assert
+        // then
         await expectLater(
           addAction,
           throwsA(
@@ -195,8 +201,9 @@ void runAddStudentDependencyTests(StudentServiceTestBase base) {
             ),
           ),
         );
-        verify(() => base.storageBrokerMock.insertStudentAsync(randomStudent))
-            .called(1);
+        verify(
+          () => base.storageBrokerMock.insertStudentAsync(randomStudent),
+        ).called(1);
         verify(
           () => base.loggingBrokerMock.logError(
             any(),

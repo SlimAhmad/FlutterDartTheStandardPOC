@@ -1,4 +1,4 @@
-import '../../models/students/student.dart';
+import '../../models/foundations/students/student.dart';
 
 abstract class IStorageBroker {
   Future<Student> insertStudentAsync(Student student);

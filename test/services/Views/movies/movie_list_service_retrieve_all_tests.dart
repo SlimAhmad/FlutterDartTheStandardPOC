@@ -3,7 +3,7 @@ import 'package:hello_world/models/foundations/movies/movie_list_exceptions.dart
 import 'package:hello_world/models/foundations/movies/movie_list_response.dart';
 import 'package:mocktail/mocktail.dart';
 
-import 'movies_list_service_test_base.dart';
+import 'movies_list_view_service_test_base.dart';
 
 void runRetrieveAllMovieListsTests(MovieListServiceTestBase base) {
   group('retrieveAllMovieListsAsync —', () {

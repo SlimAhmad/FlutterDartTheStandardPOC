@@ -1,36 +1,37 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hello_world/models/students/student.dart';
-import 'package:hello_world/models/students/student_exceptions.dart';
+import 'package:hello_world/models/foundations/students/student.dart';
+import 'package:hello_world/models/foundations/students/student_exceptions.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'student_service_test_base.dart';
 
 void runModifyStudentTests(StudentServiceTestBase base) {
   group('modifyStudentAsync —', () {
-
     group('modify |', () {
       test(
         'GIVEN a valid modified student '
         'WHEN modifyStudentAsync is called '
         'THEN it should update via the broker and return the updated student',
         () async {
-          // Arrange
+          // given
           final Student randomStudent = base.createRandomModifiedStudent();
           final Student inputStudent = randomStudent;
           final Student storageStudent = randomStudent;
           final Student expectedStudent = storageStudent;
 
-          when(() => base.storageBrokerMock.updateStudentAsync(inputStudent))
-              .thenAnswer((_) async => storageStudent);
+          when(
+            () => base.storageBrokerMock.updateStudentAsync(inputStudent),
+          ).thenAnswer((_) async => storageStudent);
 
-          // Act
-          final Student actualStudent =
-              await base.studentService.modifyStudentAsync(inputStudent);
+          // when
+          final Student actualStudent = await base.studentService
+              .modifyStudentAsync(inputStudent);
 
-          // Assert
+          // then
           expect(actualStudent, equals(expectedStudent));
-          verify(() => base.storageBrokerMock.updateStudentAsync(inputStudent))
-              .called(1);
+          verify(
+            () => base.storageBrokerMock.updateStudentAsync(inputStudent),
+          ).called(1);
           verifyNoMoreInteractions(base.storageBrokerMock);
           verifyNoMoreInteractions(base.loggingBrokerMock);
         },
@@ -43,14 +44,14 @@ void runModifyStudentTests(StudentServiceTestBase base) {
         'WHEN modifyStudentAsync is called '
         'THEN it should throw StudentValidationException wrapping InvalidStudentException',
         () async {
-          // Arrange
+          // given
           const Student? nullStudent = null;
 
-          // Act
+          // when
           Future<Student> modifyAction() =>
               base.studentService.modifyStudentAsync(nullStudent);
 
-          // Assert
+          // then
           await expectLater(
             modifyAction,
             throwsA(
@@ -70,15 +71,16 @@ void runModifyStudentTests(StudentServiceTestBase base) {
         'WHEN modifyStudentAsync is called '
         'THEN it should throw StudentValidationException with Id error',
         () async {
-          // Arrange
-          final Student invalidStudent =
-              base.createRandomModifiedStudent().copyWith(id: '');
+          // given
+          final Student invalidStudent = base
+              .createRandomModifiedStudent()
+              .copyWith(id: '');
 
-          // Act
+          // when
           Future<Student> modifyAction() =>
               base.studentService.modifyStudentAsync(invalidStudent);
 
-          // Assert
+          // then
           await expectLater(
             modifyAction,
             throwsA(isA<StudentValidationException>()),
@@ -92,18 +94,18 @@ void runModifyStudentTests(StudentServiceTestBase base) {
         'WHEN modifyStudentAsync is called '
         'THEN it should throw StudentValidationException with UpdatedDate error',
         () async {
-          // Arrange
+          // given
           final now = DateTime.now();
           final Student invalidStudent = base.createRandomStudent().copyWith(
             createdDate: now,
             updatedDate: now, // must be strictly after on modify
           );
 
-          // Act
+          // when
           Future<Student> modifyAction() =>
               base.studentService.modifyStudentAsync(invalidStudent);
 
-          // Assert
+          // then
           await expectLater(
             modifyAction,
             throwsA(
@@ -127,15 +129,16 @@ void runModifyStudentTests(StudentServiceTestBase base) {
         'WHEN modifyStudentAsync is called '
         'THEN it should throw StudentValidationException with Email error',
         () async {
-          // Arrange
-          final Student invalidStudent =
-              base.createRandomModifiedStudent().copyWith(email: 'bad-email');
+          // given
+          final Student invalidStudent = base
+              .createRandomModifiedStudent()
+              .copyWith(email: 'bad-email');
 
-          // Act
+          // when
           Future<Student> modifyAction() =>
               base.studentService.modifyStudentAsync(invalidStudent);
 
-          // Assert
+          // then
           await expectLater(
             modifyAction,
             throwsA(isA<StudentValidationException>()),
@@ -151,26 +154,32 @@ void runModifyStudentTests(StudentServiceTestBase base) {
         'WHEN modifyStudentAsync is called '
         'THEN it should throw StudentDependencyException and log the error',
         () async {
-          // Arrange
+          // given
           final Student randomStudent = base.createRandomModifiedStudent();
           final storageException = Exception('Write conflict.');
 
-          when(() => base.storageBrokerMock.updateStudentAsync(randomStudent))
-              .thenThrow(storageException);
+          when(
+            () => base.storageBrokerMock.updateStudentAsync(randomStudent),
+          ).thenThrow(storageException);
 
-          // Act
+          // when
           Future<Student> modifyAction() =>
               base.studentService.modifyStudentAsync(randomStudent);
 
-          // Assert
+          // then
           await expectLater(
             modifyAction,
             throwsA(isA<StudentDependencyException>()),
           );
-          verify(() => base.storageBrokerMock.updateStudentAsync(randomStudent))
-              .called(1);
-          verify(() => base.loggingBrokerMock
-              .logError(any(), message: any(named: 'message'))).called(1);
+          verify(
+            () => base.storageBrokerMock.updateStudentAsync(randomStudent),
+          ).called(1);
+          verify(
+            () => base.loggingBrokerMock.logError(
+              any(),
+              message: any(named: 'message'),
+            ),
+          ).called(1);
           verifyNoMoreInteractions(base.storageBrokerMock);
         },
       );
@@ -180,20 +189,21 @@ void runModifyStudentTests(StudentServiceTestBase base) {
         'WHEN modifyStudentAsync is called '
         'THEN it should throw StudentDependencyValidationException wrapping LockedUserStudentException',
         () async {
-          // Arrange
+          // given
           final Student randomStudent = base.createRandomModifiedStudent();
           final lockedException = LockedUserStudentException(
             innerException: Exception('Record locked.'),
           );
 
-          when(() => base.storageBrokerMock.updateStudentAsync(randomStudent))
-              .thenThrow(lockedException);
+          when(
+            () => base.storageBrokerMock.updateStudentAsync(randomStudent),
+          ).thenThrow(lockedException);
 
-          // Act
+          // when
           Future<Student> modifyAction() =>
               base.studentService.modifyStudentAsync(randomStudent);
 
-          // Assert
+          // then
           await expectLater(
             modifyAction,
             throwsA(
@@ -204,8 +214,9 @@ void runModifyStudentTests(StudentServiceTestBase base) {
               ),
             ),
           );
-          verify(() => base.storageBrokerMock.updateStudentAsync(randomStudent))
-              .called(1);
+          verify(
+            () => base.storageBrokerMock.updateStudentAsync(randomStudent),
+          ).called(1);
           verifyNoMoreInteractions(base.storageBrokerMock);
         },
       );

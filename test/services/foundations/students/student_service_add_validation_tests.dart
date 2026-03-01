@@ -1,14 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hello_world/models/students/student.dart';
-import 'package:hello_world/models/students/student_exceptions.dart';
+import 'package:hello_world/models/foundations/students/student.dart';
+import 'package:hello_world/models/foundations/students/student_exceptions.dart';
 import 'package:mocktail/mocktail.dart';
-
 
 import 'student_service_test_base.dart';
 
 void runAddStudentValidationTests(StudentServiceTestBase base) {
   group('addStudentAsync — Validation |', () {
-
     test(
       'GIVEN a null student '
       'WHEN addStudentAsync is called '
@@ -43,7 +41,9 @@ void runAddStudentValidationTests(StudentServiceTestBase base) {
       'THEN it should throw StudentValidationException wrapping InvalidStudentException',
       () async {
         // Arrange
-        final Student invalidStudent = base.createRandomStudent().copyWith(id: '');
+        final Student invalidStudent = base.createRandomStudent().copyWith(
+          id: '',
+        );
 
         // Act
         Future<Student> addAction() =>
@@ -74,8 +74,9 @@ void runAddStudentValidationTests(StudentServiceTestBase base) {
       'THEN it should throw StudentValidationException with Name error',
       () async {
         // Arrange
-        final Student invalidStudent =
-            base.createRandomStudent().copyWith(name: '');
+        final Student invalidStudent = base.createRandomStudent().copyWith(
+          name: '',
+        );
 
         // Act
         Future<Student> addAction() =>
@@ -106,8 +107,9 @@ void runAddStudentValidationTests(StudentServiceTestBase base) {
       'THEN it should throw StudentValidationException with Name error',
       () async {
         // Arrange
-        final Student invalidStudent =
-            base.createRandomStudent().copyWith(name: '   ');
+        final Student invalidStudent = base.createRandomStudent().copyWith(
+          name: '   ',
+        );
 
         // Act
         Future<Student> addAction() =>
@@ -128,8 +130,9 @@ void runAddStudentValidationTests(StudentServiceTestBase base) {
       'THEN it should throw StudentValidationException with Email error',
       () async {
         // Arrange
-        final Student invalidStudent =
-            base.createRandomStudent().copyWith(email: '');
+        final Student invalidStudent = base.createRandomStudent().copyWith(
+          email: '',
+        );
 
         // Act
         Future<Student> addAction() =>
@@ -160,8 +163,9 @@ void runAddStudentValidationTests(StudentServiceTestBase base) {
       'THEN it should throw StudentValidationException with Email error',
       () async {
         // Arrange
-        final Student invalidStudent =
-            base.createRandomStudent().copyWith(email: 'not-an-email');
+        final Student invalidStudent = base.createRandomStudent().copyWith(
+          email: 'not-an-email',
+        );
 
         // Act
         Future<Student> addAction() =>
@@ -195,7 +199,9 @@ void runAddStudentValidationTests(StudentServiceTestBase base) {
         final now = DateTime.now();
         final Student invalidStudent = base.createRandomStudent().copyWith(
           createdDate: now,
-          updatedDate: now.add(const Duration(hours: 1)), // must be equal on add
+          updatedDate: now.add(
+            const Duration(hours: 1),
+          ), // must be equal on add
         );
 
         // Act

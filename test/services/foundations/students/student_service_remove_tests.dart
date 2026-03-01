@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hello_world/models/students/student.dart';
-import 'package:hello_world/models/students/student_exceptions.dart';
+import 'package:hello_world/models/foundations/students/student.dart';
+import 'package:hello_world/models/foundations/students/student_exceptions.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'student_service_test_base.dart';
@@ -20,24 +20,27 @@ void runRemoveStudentByIdTests(StudentServiceTestBase base) {
           final Student deletedStudent = storageStudent;
           final Student expectedStudent = deletedStudent;
 
-          when(() => base.storageBrokerMock
-                  .selectStudentByIdAsync(inputStudentId))
-              .thenAnswer((_) async => storageStudent);
+          when(
+            () => base.storageBrokerMock.selectStudentByIdAsync(inputStudentId),
+          ).thenAnswer((_) async => storageStudent);
 
-          when(() => base.storageBrokerMock.deleteStudentAsync(storageStudent))
-              .thenAnswer((_) async => deletedStudent);
+          when(
+            () => base.storageBrokerMock.deleteStudentAsync(storageStudent),
+          ).thenAnswer((_) async => deletedStudent);
 
           // Act
-          final Student actualStudent =
-              await base.studentService.removeStudentByIdAsync(inputStudentId);
+          final Student actualStudent = await base.studentService
+              .removeStudentByIdAsync(inputStudentId);
 
           // Assert
           expect(actualStudent, equals(expectedStudent));
 
-          verify(() => base.storageBrokerMock
-              .selectStudentByIdAsync(inputStudentId)).called(1);
-          verify(() => base.storageBrokerMock.deleteStudentAsync(storageStudent))
-              .called(1);
+          verify(
+            () => base.storageBrokerMock.selectStudentByIdAsync(inputStudentId),
+          ).called(1);
+          verify(
+            () => base.storageBrokerMock.deleteStudentAsync(storageStudent),
+          ).called(1);
           verifyNoMoreInteractions(base.storageBrokerMock);
           verifyNoMoreInteractions(base.loggingBrokerMock);
         },
@@ -45,29 +48,24 @@ void runRemoveStudentByIdTests(StudentServiceTestBase base) {
     });
 
     group('Validation |', () {
-      test(
-        'GIVEN an empty studentId '
-        'WHEN removeStudentByIdAsync is called '
-        'THEN it should throw StudentValidationException',
-        () async {
-          // Arrange
-          const String emptyStudentId = '';
+      test('GIVEN an empty studentId '
+          'WHEN removeStudentByIdAsync is called '
+          'THEN it should throw StudentValidationException', () async {
+        // Arrange
+        const String emptyStudentId = '';
 
-          // Act
-          Future<Student> removeAction() =>
-              base.studentService.removeStudentByIdAsync(emptyStudentId);
+        // Act
+        Future<Student> removeAction() =>
+            base.studentService.removeStudentByIdAsync(emptyStudentId);
 
-          // Assert
-          await expectLater(
-            removeAction,
-            throwsA(isA<StudentValidationException>()),
-          );
-          verifyNever(
-              () => base.storageBrokerMock.selectStudentByIdAsync(any()));
-          verifyNever(
-              () => base.storageBrokerMock.deleteStudentAsync(any()));
-        },
-      );
+        // Assert
+        await expectLater(
+          removeAction,
+          throwsA(isA<StudentValidationException>()),
+        );
+        verifyNever(() => base.storageBrokerMock.selectStudentByIdAsync(any()));
+        verifyNever(() => base.storageBrokerMock.deleteStudentAsync(any()));
+      });
 
       test(
         'GIVEN a studentId that does not exist in storage '
@@ -77,9 +75,9 @@ void runRemoveStudentByIdTests(StudentServiceTestBase base) {
           // Arrange
           final String nonExistentId = base.randomId();
 
-          when(() => base.storageBrokerMock
-                  .selectStudentByIdAsync(nonExistentId))
-              .thenAnswer((_) async => null);
+          when(
+            () => base.storageBrokerMock.selectStudentByIdAsync(nonExistentId),
+          ).thenAnswer((_) async => null);
 
           // Act
           Future<Student> removeAction() =>
@@ -96,10 +94,10 @@ void runRemoveStudentByIdTests(StudentServiceTestBase base) {
               ),
             ),
           );
-          verify(() => base.storageBrokerMock
-              .selectStudentByIdAsync(nonExistentId)).called(1);
-          verifyNever(
-              () => base.storageBrokerMock.deleteStudentAsync(any()));
+          verify(
+            () => base.storageBrokerMock.selectStudentByIdAsync(nonExistentId),
+          ).called(1);
+          verifyNever(() => base.storageBrokerMock.deleteStudentAsync(any()));
           verifyNoMoreInteractions(base.storageBrokerMock);
         },
       );
@@ -115,9 +113,10 @@ void runRemoveStudentByIdTests(StudentServiceTestBase base) {
           final String randomStudentId = base.randomId();
           final storageException = Exception('Read failure.');
 
-          when(() => base.storageBrokerMock
-                  .selectStudentByIdAsync(randomStudentId))
-              .thenThrow(storageException);
+          when(
+            () =>
+                base.storageBrokerMock.selectStudentByIdAsync(randomStudentId),
+          ).thenThrow(storageException);
 
           // Act
           Future<Student> removeAction() =>
@@ -128,12 +127,17 @@ void runRemoveStudentByIdTests(StudentServiceTestBase base) {
             removeAction,
             throwsA(isA<StudentDependencyException>()),
           );
-          verify(() => base.storageBrokerMock
-              .selectStudentByIdAsync(randomStudentId)).called(1);
-          verify(() => base.loggingBrokerMock
-              .logError(any(), message: any(named: 'message'))).called(1);
-          verifyNever(
-              () => base.storageBrokerMock.deleteStudentAsync(any()));
+          verify(
+            () =>
+                base.storageBrokerMock.selectStudentByIdAsync(randomStudentId),
+          ).called(1);
+          verify(
+            () => base.loggingBrokerMock.logError(
+              any(),
+              message: any(named: 'message'),
+            ),
+          ).called(1);
+          verifyNever(() => base.storageBrokerMock.deleteStudentAsync(any()));
           verifyNoMoreInteractions(base.storageBrokerMock);
         },
       );
@@ -148,12 +152,13 @@ void runRemoveStudentByIdTests(StudentServiceTestBase base) {
           final String inputStudentId = randomStudent.id;
           final storageException = Exception('Delete conflict.');
 
-          when(() => base.storageBrokerMock
-                  .selectStudentByIdAsync(inputStudentId))
-              .thenAnswer((_) async => randomStudent);
+          when(
+            () => base.storageBrokerMock.selectStudentByIdAsync(inputStudentId),
+          ).thenAnswer((_) async => randomStudent);
 
-          when(() => base.storageBrokerMock.deleteStudentAsync(randomStudent))
-              .thenThrow(storageException);
+          when(
+            () => base.storageBrokerMock.deleteStudentAsync(randomStudent),
+          ).thenThrow(storageException);
 
           // Act
           Future<Student> removeAction() =>
@@ -164,12 +169,18 @@ void runRemoveStudentByIdTests(StudentServiceTestBase base) {
             removeAction,
             throwsA(isA<StudentDependencyException>()),
           );
-          verify(() => base.storageBrokerMock
-              .selectStudentByIdAsync(inputStudentId)).called(1);
-          verify(() => base.storageBrokerMock.deleteStudentAsync(randomStudent))
-              .called(1);
-          verify(() => base.loggingBrokerMock
-              .logError(any(), message: any(named: 'message'))).called(1);
+          verify(
+            () => base.storageBrokerMock.selectStudentByIdAsync(inputStudentId),
+          ).called(1);
+          verify(
+            () => base.storageBrokerMock.deleteStudentAsync(randomStudent),
+          ).called(1);
+          verify(
+            () => base.loggingBrokerMock.logError(
+              any(),
+              message: any(named: 'message'),
+            ),
+          ).called(1);
           verifyNoMoreInteractions(base.storageBrokerMock);
         },
       );

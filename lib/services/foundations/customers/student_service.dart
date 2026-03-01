@@ -1,14 +1,14 @@
 import 'package:hello_world/brokers/apiBrokers/api_broker.dart';
 import 'package:hello_world/brokers/loggings/i_logging_broker.dart';
 import 'package:hello_world/brokers/storages/i_storage_broker.dart';
-import 'package:hello_world/models/students/student.dart';
-import 'package:hello_world/models/students/student_exceptions.dart';
+import 'package:hello_world/models/foundations/students/student.dart';
+import 'package:hello_world/models/foundations/students/student_exceptions.dart';
 import 'package:hello_world/services/foundations/customers/i_student_service.dart';
 import 'package:hello_world/services/foundations/customers/student_service.dart';
 import 'package:http_exception/http_exception.dart';
 
-part 'parts/student_service_validations.dart';
 part 'parts/student_service_exceptions.dart';
+part 'parts/student_service_validations.dart';
 
 class StudentService implements IStudentService {
    final ApibrokerStudent apibrokerStudent;
@@ -39,11 +39,11 @@ class StudentService implements IStudentService {
   tryCatch(() async {
     validateStudentId(studentId);
 
-    final Student? student = 
+    final Student student = 
       await apibrokerStudent.getStudentByIdAsync(studentId);
 
     validateStorageStudent(student, studentId);
-    return student!;
+    return student;
   });
 
   @override

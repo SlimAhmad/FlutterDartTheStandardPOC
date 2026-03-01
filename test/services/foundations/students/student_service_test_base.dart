@@ -1,13 +1,14 @@
 import 'package:faker/faker.dart';
 import 'package:hello_world/brokers/loggings/i_logging_broker.dart';
 import 'package:hello_world/brokers/storages/i_storage_broker.dart';
-import 'package:hello_world/models/students/student.dart';
+import 'package:hello_world/models/foundations/students/student.dart';
 import 'package:hello_world/services/foundations/students/i_student_service.dart';
 import 'package:hello_world/services/foundations/students/student_service.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:uuid/uuid.dart';
 
 class MockStorageBroker extends Mock implements IStorageBroker {}
+
 class MockLoggingBroker extends Mock implements ILoggingBroker {}
 
 class StudentServiceTestBase {
@@ -38,28 +39,29 @@ class StudentServiceTestBase {
       loggingBroker: loggingBrokerMock,
     );
 
-    when(() => loggingBrokerMock.logError(any(), message: any(named: 'message')))
-        .thenReturn(null);
+    when(
+      () => loggingBrokerMock.logError(any(), message: any(named: 'message')),
+    ).thenReturn(null);
 
-    when(() => loggingBrokerMock.logCritical(any(), message: any(named: 'message')))
-        .thenReturn(null);
+    when(
+      () =>
+          loggingBrokerMock.logCritical(any(), message: any(named: 'message')),
+    ).thenReturn(null);
 
     when(() => loggingBrokerMock.logInformation(any())).thenReturn(null);
-    
+
     when(() => loggingBrokerMock.logWarning(any())).thenReturn(null);
   }
 
-  String randomId() =>
-     _uuid.v4();
+  String randomId() => _uuid.v4();
 
-  String randomName() => 
-    _faker.person.name();
+  String randomName() => _faker.person.name();
 
-  String randomEmail() => 
-    _faker.internet.email();
+  String randomEmail() => _faker.internet.email();
 
-  DateTime randomPastDate() =>
-      DateTime.now().subtract(Duration(days: _faker.randomGenerator.integer(365, min: 1)));
+  DateTime randomPastDate() => DateTime.now().subtract(
+    Duration(days: _faker.randomGenerator.integer(365, min: 1)),
+  );
 
   Student createRandomStudent() {
     final now = DateTime.now();
