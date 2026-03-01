@@ -21,13 +21,13 @@ class MovieList {
 
   factory MovieList.fromJson(Map<String, dynamic> json) {
     return MovieList(
-      description: json['description'] ?? '',
+      description: json['overview'] ?? '',
       favoriteCount: json['favorite_count'] ?? 0,
       id: json['id'] ?? 0,
       itemCount: json['item_count'] ?? 0,
       iso639_1: json['iso_639_1'] ?? '',
       listType: json['list_type'] ?? '',
-      name: json['name'] ?? '',
+      name: json['title'] ?? '',
       posterPath: json['poster_path'],
     );
   }

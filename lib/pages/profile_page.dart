@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/components/movie_component.dart';
-import 'package:hello_world/models/foundations/movies/movie_list_response.dart';
-import 'package:hello_world/services/foundations/movies/movie_list_service.dart';
+import 'package:hello_world/models/views/movie_list_view/movie_list_response_view.dart';
+import 'package:hello_world/services/views/movies_list/movie_list_view_service.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -15,9 +15,9 @@ class _ProfilePageState extends State<ProfilePage> {
     {'task': 'Buy groceries', 'completed': false},
   ];
 
-  final MovieListService movieListService = MovieListService();
+  final MovieListViewService movieListService = MovieListViewService();
   bool isLoading = false;
-  MovieListResponse? movies;
+  MovieListResponseView? movies;
 
   @override
   void initState() {
@@ -27,15 +27,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _loadMovies() async {
     setState(() => isLoading = true);
 
-    final fetched = await movieListService.retrieveAllMovieListsAsync();
+    final fetched = await movieListService.retrieveAllMovieViewsAsync();
     setState(() => movies = fetched);
     setState(() => isLoading = false);
   }
-
-  // Future<void> _loadMovies() async {
-  //     final fetched = await movieListService.retrieveAllMovieListsAsync();
-  //     setState(() => movies = fetched);
-  // }
 
   void toggleTodoStatus(bool? value, int index) {
     setState(() {

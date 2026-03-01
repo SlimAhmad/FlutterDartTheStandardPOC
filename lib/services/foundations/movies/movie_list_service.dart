@@ -3,8 +3,8 @@ import 'package:hello_world/brokers/loggings/logging_broker.dart';
 import 'package:hello_world/models/foundations/movies/movie_list_exceptions.dart';
 import 'package:hello_world/models/foundations/movies/movie_list_response.dart';
 import 'package:hello_world/services/foundations/Movies/i_movie_list_service.dart';
-import 'package:http_exception/http_exception.dart';
 import 'package:hello_world/services/foundations/movies/movie_list_service.dart';
+import 'package:http_exception/http_exception.dart';
 
 part 'parts/movie_list_service_exceptions.dart';
 
@@ -21,6 +21,7 @@ class MovieListService implements IMovieListService {
   @override
   Future<MovieListResponse> retrieveAllMovieListsAsync() =>
       tryCatchList(() async {
-        return apiBrokerMovieList.getAllMovieListsAsync();
+        final response = await apiBrokerMovieList.getAllMovieListsAsync();
+        return response;
       });
 }
